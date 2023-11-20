@@ -22,6 +22,7 @@ export default function RootLayout({
         <AuthProvider>
           <div className="relative flex min-h-screen flex-col">
             <Navbar />
+
             {children}
           </div>
         </AuthProvider>
