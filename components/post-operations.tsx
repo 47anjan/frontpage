@@ -23,6 +23,7 @@ import { MoreHorizontal } from "lucide-react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { toast } from "./ui/use-toast";
+import Link from "next/link";
 
 interface Props {
   post: Pick<Post, "id" | "title" | "published" | "createdAt">;
@@ -30,6 +31,9 @@ interface Props {
 
 const PostOperations = ({ post }: Props) => {
   const router = useRouter();
+
+  const status = !post.published ? "Publish" : "Make as draft";
+  const message = !post.published ? "published" : "draft";
 
   const handlePostDelete = async () => {
     try {
@@ -47,6 +51,24 @@ const PostOperations = ({ post }: Props) => {
     }
   };
 
+  const handlePostPublish = async () => {
+    try {
+      await axios.patch(`/api/posts/${post.id}`, {
+        published: !post.published,
+      });
+      router.refresh();
+      toast({
+        description: `Your post has been ${message}.`,
+      });
+    } catch (error) {
+      toast({
+        title: "Something went wrong.",
+        description: `Your post was not ${message}. Please try again.`,
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <AlertDialog>
       <Menubar>
@@ -55,9 +77,13 @@ const PostOperations = ({ post }: Props) => {
             <MoreHorizontal size={20} />
           </MenubarTrigger>
           <MenubarContent>
-            <MenubarItem>Publish</MenubarItem>
+            <MenubarItem onClick={handlePostPublish}>{status}</MenubarItem>
             <MenubarSeparator />
-            <MenubarItem>Edit</MenubarItem>
+            <MenubarItem asChild>
+              <Link href={`/editor/${post.id}`} className="w-full">
+                Edit
+              </Link>
+            </MenubarItem>
             <MenubarSeparator />
             <MenubarItem asChild>
               <AlertDialogTrigger className="w-full">Delete</AlertDialogTrigger>

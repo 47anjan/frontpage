@@ -123,13 +123,16 @@ function Editor({ post }: EditorProps) {
       <div className="grid w-full gap-10">
         <div className="flex w-full items-center justify-between">
           <div className="flex items-center space-x-10">
-            <Link
-              href="/dashboard/posts"
+            <div
+              onClick={() => {
+                router.push("/dashboard/posts");
+                router.refresh();
+              }}
               className={cn(buttonVariants({ variant: "ghost" }))}
             >
               <ArrowLeft className="mr-2" size={18} />
               Back
-            </Link>
+            </div>
             <p className="text-sm text-muted-foreground">
               {post?.published ? "Published" : "Draft"}
             </p>
