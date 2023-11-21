@@ -15,7 +15,7 @@ import { cn } from "@/lib/utils";
 import { postPatchSchema } from "@/lib/validations/post";
 import { buttonVariants } from "@/components/ui/button";
 import { Post } from "@prisma/client";
-import { Loader2 } from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
 import axios from "axios";
 import { toast } from "./ui/use-toast";
 
@@ -72,7 +72,7 @@ function Editor({ post }: EditorProps) {
         },
       });
     }
-  }, []);
+  }, [post]);
 
   React.useEffect(() => {
     if (typeof window !== "undefined") {
@@ -127,6 +127,7 @@ function Editor({ post }: EditorProps) {
               href="/dashboard/posts"
               className={cn(buttonVariants({ variant: "ghost" }))}
             >
+              <ArrowLeft className="mr-2" size={18} />
               Back
             </Link>
             <p className="text-sm text-muted-foreground">
