@@ -9,7 +9,6 @@ import "@/styles/editor.css";
 import { useForm } from "react-hook-form";
 import TextareaAutosize from "react-textarea-autosize";
 import * as z from "zod";
-
 import "@/styles/editor.css";
 import { cn } from "@/lib/utils";
 import { postPatchSchema } from "@/lib/validations/post";
@@ -22,6 +21,7 @@ import { CldUploadWidget } from "next-cloudinary";
 import Image from "next/image";
 
 type FormData = z.infer<typeof postPatchSchema>;
+import slugify from "slugify";
 
 interface CldResult {
   url: string;
@@ -59,6 +59,7 @@ function Editor({ post }: EditorProps) {
     const LinkTool = (await import("@editorjs/link")).default;
     //@ts-ignore
     const InlineCode = (await import("@editorjs/inline-code")).default;
+
     const body = postPatchSchema.parse(post);
 
     if (!ref.current) {
@@ -100,14 +101,24 @@ function Editor({ post }: EditorProps) {
     }
   }, [isMounted, initializeEditor]);
 
+  const data = watch();
+
   async function onSubmit(data: FormData) {
     try {
       setIsSaving(true);
       const blocks = await ref.current?.save();
+
+      const slug = slugify(data.title!!, {
+        replacement: "-",
+        lower: true,
+        trim: true,
+      });
+
       const newPost = {
         title: data.title,
         content: blocks,
         image: data.image,
+        slug: `${slug}-${post.id}`,
       };
       await axios.patch(`/api/posts/${post.id}`, newPost);
       setIsSaving(false);
@@ -127,10 +138,6 @@ function Editor({ post }: EditorProps) {
   if (!isMounted) {
     return null;
   }
-
-  const data = watch();
-
-  console.log(post);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -164,12 +171,24 @@ function Editor({ post }: EditorProps) {
         <div className="prose prose-stone mx-auto w-[800px] dark:prose-invert relative">
           {post.image && (
             <Image
-              src={data.image || post.image || ""}
+              src={post.image || ""}
               alt="Cover Photo"
               width={800}
-              height={400}
+              height={450}
+              loading="lazy"
             />
           )}
+
+          {!post.image && data.image && (
+            <Image
+              src={data.image || ""}
+              alt="Cover Photo"
+              width={800}
+              height={450}
+              loading="lazy"
+            />
+          )}
+
           <div className="flex flex-col gap-2 mb-4 ">
             <CldUploadWidget
               onUpload={(result, widget) => {

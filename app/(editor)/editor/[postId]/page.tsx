@@ -25,7 +25,7 @@ const EditorPage = async ({ params: { postId } }: Params) => {
         title: post.title,
         content: post.content,
         published: post.published,
-        image: post.image,
+        image: post.image || "",
       }}
     />
   );
