@@ -33,7 +33,7 @@ const PostOperations = ({ post }: Props) => {
   const router = useRouter();
 
   const status = !post.published ? "Publish" : "Make as draft";
-  const message = !post.published ? "published" : "draft";
+  const message = !post.published ? "published" : "deleted";
 
   const handlePostDelete = async () => {
     try {

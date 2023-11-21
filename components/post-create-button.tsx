@@ -6,7 +6,6 @@ import axios from "axios";
 import { cn } from "@/lib/utils";
 import { ButtonProps, buttonVariants } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
-import { log } from "util";
 import { toast } from "./ui/use-toast";
 
 interface PostCreateButtonProps extends ButtonProps {}

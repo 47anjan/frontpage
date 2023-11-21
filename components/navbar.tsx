@@ -1,7 +1,14 @@
+"use client";
+
 import Link from "next/link";
 import Profile from "./profile";
-
+import { useSession } from "next-auth/react";
+import { Button } from "./ui/button";
+import { Skeleton } from "./ui/skeleton";
+import { buttonVariants } from "@/components/ui/button";
 const Navbar = () => {
+  const { status } = useSession();
+
   return (
     <header className="sticky top-0 z-[999999] w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 items-center justify-between">
@@ -12,14 +19,26 @@ const Navbar = () => {
           <nav className="flex items-center space-x-6 text-sm font-medium">
             <Link
               className="transition-colors hover:text-foreground/80 text-foreground/60"
-              href="/"
+              href="/blog"
             >
-              Documentation
+              Blog
             </Link>
           </nav>
         </div>
         <div>
-          <Profile />
+          {status === "unauthenticated" && (
+            <Button size="sm">
+              <Link
+                href="/api/auth/signin"
+                className={cn(buttonVariants({ size: "sm" }))}
+              >
+                SignIn
+              </Link>
+            </Button>
+          )}
+          {status === "loading" && <Skeleton className="h-9 w-16 rounded-md" />}
+
+          {status === "authenticated" && <Profile />}
         </div>
       </div>
     </header>

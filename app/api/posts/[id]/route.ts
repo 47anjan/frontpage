@@ -31,6 +31,7 @@ export async function PATCH(
 
   const updatedPost = await prisma.post.update({
     where: { id: params.id },
+
     data: {
       ...body,
     },

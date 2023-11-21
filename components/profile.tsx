@@ -1,3 +1,5 @@
+"use client";
+
 import { LogOut, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,12 +11,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { getCurrentUser } from "@/app/auth/sessions";
 import Image from "next/image";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
-async function Profile() {
-  const user = await getCurrentUser();
+function Profile() {
+  const { data } = useSession();
+
+  const user = data?.user;
 
   if (!user) return null;
 
@@ -52,9 +56,11 @@ async function Profile() {
 
         <DropdownMenuSeparator />
 
-        <DropdownMenuItem>
-          <LogOut className="mr-2 h-4 w-4" />
-          <span>Log out</span>
+        <DropdownMenuItem asChild>
+          <Link href="/api/auth/signout">
+            <LogOut className="mr-2 h-4 w-4" />
+            <span>Log out</span>
+          </Link>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

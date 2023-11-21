@@ -13,21 +13,30 @@ import * as z from "zod";
 import "@/styles/editor.css";
 import { cn } from "@/lib/utils";
 import { postPatchSchema } from "@/lib/validations/post";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Post } from "@prisma/client";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import axios from "axios";
 import { toast } from "./ui/use-toast";
+import { CldUploadWidget } from "next-cloudinary";
+import Image from "next/image";
 
 type FormData = z.infer<typeof postPatchSchema>;
 
+interface CldResult {
+  url: string;
+}
+
 interface EditorProps {
-  post: Pick<Post, "id" | "title" | "content" | "published">;
+  post: Pick<Post, "id" | "title" | "content" | "published" | "image">;
 }
 
 function Editor({ post }: EditorProps) {
-  const { register, handleSubmit } = useForm<FormData>({
+  const { register, handleSubmit, watch, setValue } = useForm<FormData>({
     resolver: zodResolver(postPatchSchema),
+    defaultValues: {
+      image: post.image || "",
+    },
   });
   const ref = React.useRef<EditorJS>();
   const router = useRouter();
@@ -98,6 +107,7 @@ function Editor({ post }: EditorProps) {
       const newPost = {
         title: data.title,
         content: blocks,
+        image: data.image,
       };
       await axios.patch(`/api/posts/${post.id}`, newPost);
       setIsSaving(false);
@@ -117,6 +127,10 @@ function Editor({ post }: EditorProps) {
   if (!isMounted) {
     return null;
   }
+
+  const data = watch();
+
+  console.log(post);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -146,7 +160,37 @@ function Editor({ post }: EditorProps) {
             <span>Save</span>
           </button>
         </div>
-        <div className="prose prose-stone mx-auto w-[800px] dark:prose-invert">
+
+        <div className="prose prose-stone mx-auto w-[800px] dark:prose-invert relative">
+          {post.image && (
+            <Image
+              src={data.image || post.image || ""}
+              alt="Cover Photo"
+              width={800}
+              height={400}
+            />
+          )}
+          <div className="flex flex-col gap-2 mb-4 ">
+            <CldUploadWidget
+              onUpload={(result, widget) => {
+                const image = result.info as CldResult;
+                setValue("image", image.url);
+              }}
+              uploadPreset="pzqeksrv"
+            >
+              {({ open }) => (
+                <Button
+                  onClick={() => open()}
+                  variant="outline"
+                  size="sm"
+                  type="button"
+                >
+                  Upload Blog Cover
+                </Button>
+              )}
+            </CldUploadWidget>
+          </div>
+
           <TextareaAutosize
             autoFocus
             id="title"
