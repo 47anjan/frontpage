@@ -69,9 +69,10 @@ model Post {
   published Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
-  authorId  String   @db.ObjectId
-  slug      String   @unique
-  author User @relation(fields: [authorId], references: [id])
+  authorId  String   
+  slug      String?   
+  image     String?
+  author User @relation(fields: [authorId], references: [email])
 
   @@map(name: "posts")
 }

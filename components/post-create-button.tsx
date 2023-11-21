@@ -2,9 +2,12 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-
+import axios from "axios";
 import { cn } from "@/lib/utils";
 import { ButtonProps, buttonVariants } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
+import { log } from "util";
+import { toast } from "./ui/use-toast";
 
 interface PostCreateButtonProps extends ButtonProps {}
 
@@ -17,8 +20,22 @@ export function PostCreateButton({
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   async function onClick() {
-    setIsLoading(true);
-    setIsLoading(false);
+    try {
+      setIsLoading(true);
+      const { data } = await axios.post("/api/posts", {
+        title: "Untitled Post",
+      });
+
+      router.refresh();
+      router.push(`/editor/${data.id}`);
+    } catch (error) {
+      setIsLoading(false);
+      toast({
+        title: "Something went wrong.",
+        description: "Your post was not created. Please try again.",
+        variant: "destructive",
+      });
+    }
   }
 
   return (
@@ -34,6 +51,7 @@ export function PostCreateButton({
       disabled={isLoading}
       {...props}
     >
+      {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
       New post
     </button>
   );

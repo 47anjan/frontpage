@@ -6,3 +6,8 @@ export const postPatchSchema = z.object({
   // TODO: Type this properly from editorjs block types?
   content: z.any().optional(),
 });
+
+export const postCreateSchema = z.object({
+  title: z.string(),
+  content: z.string().optional(),
+});

@@ -33,14 +33,20 @@ function Editor({ post }: EditorProps) {
 
   const initializeEditor = React.useCallback(async () => {
     const EditorJS = (await import("@editorjs/editorjs")).default;
+    //@ts-ignore
     const Header = (await import("@editorjs/header")).default;
+    //@ts-ignore
     const Embed = (await import("@editorjs/embed")).default;
+    //@ts-ignore
     const Table = (await import("@editorjs/table")).default;
+    //@ts-ignore
     const List = (await import("@editorjs/list")).default;
+    //@ts-ignore
     const Code = (await import("@editorjs/code")).default;
+    //@ts-ignore
     const LinkTool = (await import("@editorjs/link")).default;
+    //@ts-ignore
     const InlineCode = (await import("@editorjs/inline-code")).default;
-
     const body = postPatchSchema.parse(post);
 
     if (!ref.current) {
