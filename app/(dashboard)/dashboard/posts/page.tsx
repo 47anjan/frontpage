@@ -4,7 +4,7 @@ import { PostCreateButton } from "@/components/post-create-button";
 import { PostItem } from "@/components/post-item";
 import prisma from "@/prisma/client";
 
-const Dashboard = async () => {
+const ManagePostsPage = async () => {
   const user = await getCurrentUser();
   if (!user || !user?.email) return null;
 
@@ -46,4 +46,4 @@ const Dashboard = async () => {
     </section>
   );
 };
-export default Dashboard;
+export default ManagePostsPage;

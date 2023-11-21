@@ -15,6 +15,9 @@ import { cn } from "@/lib/utils";
 import { postPatchSchema } from "@/lib/validations/post";
 import { buttonVariants } from "@/components/ui/button";
 import { Post } from "@prisma/client";
+import { Loader2 } from "lucide-react";
+import axios from "axios";
+import { toast } from "./ui/use-toast";
 
 type FormData = z.infer<typeof postPatchSchema>;
 
@@ -89,17 +92,26 @@ function Editor({ post }: EditorProps) {
   }, [isMounted, initializeEditor]);
 
   async function onSubmit(data: FormData) {
-    setIsSaving(true);
-    const blocks = await ref.current?.save();
-
-    const newPost = {
-      title: data.title,
-      content: blocks,
-    };
-
-    console.log(newPost);
-
-    router.refresh();
+    try {
+      setIsSaving(true);
+      const blocks = await ref.current?.save();
+      const newPost = {
+        title: data.title,
+        content: blocks,
+      };
+      await axios.patch(`/api/posts/${post.id}`, newPost);
+      setIsSaving(false);
+      router.refresh();
+      toast({
+        description: "Your post has been saved.",
+      });
+    } catch (error) {
+      toast({
+        title: "Something went wrong.",
+        description: "Your post was not saved. Please try again.",
+        variant: "destructive",
+      });
+    }
   }
 
   if (!isMounted) {
@@ -112,7 +124,7 @@ function Editor({ post }: EditorProps) {
         <div className="flex w-full items-center justify-between">
           <div className="flex items-center space-x-10">
             <Link
-              href="/dashboard"
+              href="/dashboard/posts"
               className={cn(buttonVariants({ variant: "ghost" }))}
             >
               Back
@@ -121,7 +133,12 @@ function Editor({ post }: EditorProps) {
               {post?.published ? "Published" : "Draft"}
             </p>
           </div>
-          <button type="submit" className={cn(buttonVariants())}>
+          <button
+            disabled={isSaving}
+            type="submit"
+            className={cn(buttonVariants())}
+          >
+            {isSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             <span>Save</span>
           </button>
         </div>
