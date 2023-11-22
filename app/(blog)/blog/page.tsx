@@ -27,7 +27,7 @@ const BlogPage = async () => {
             Blog
           </h1>
           <p className="text-xl text-muted-foreground">
-            Unlish your brain with new knowlage
+            Exploring Ideas, Thoughts, and Stories
           </p>
         </div>
       </div>
@@ -65,7 +65,9 @@ const BlogPage = async () => {
                 </CardHeader>
                 <span className="sr-only">{post.title}</span>
                 <CardContent className="grid gap-2.5 p-4">
-                  <CardTitle className="line-clamp-2">{post.title}</CardTitle>
+                  <CardTitle className="line-clamp-2 leading-snug">
+                    {post.title}
+                  </CardTitle>
                   <CardDescription className="line-clamp-2">
                     {formatDate(post.createdAt.toDateString())}
                   </CardDescription>
