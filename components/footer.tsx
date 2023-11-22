@@ -1,3 +1,5 @@
+import { ModeToggle } from "./mode-toggle";
+
 const Footer = () => {
   return (
     <footer>
@@ -26,7 +28,7 @@ const Footer = () => {
             .
           </p>
         </div>
-        <div>Hello</div>
+        <ModeToggle />
       </div>
     </footer>
   );
