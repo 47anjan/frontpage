@@ -5,7 +5,7 @@ import prisma from "@/prisma/client";
 import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-
+import ReactMarkdown from "react-markdown";
 interface Params {
   params: { slug: string };
 }
@@ -43,7 +43,7 @@ const Blog = async ({ params }: Params) => {
           Published on {formatDate(post.createdAt.toDateString())}
         </time>
 
-        <h1 className="mt-2 inline-block font-bold text-4xl leading-tight lg:text-5xl">
+        <h1 className="mt-2 inline-block font-bold text-4xl leading-snug lg:text-5xl">
           {post.title}
         </h1>
 
@@ -74,7 +74,12 @@ const Blog = async ({ params }: Params) => {
         </AspectRatio>
       )}
 
-      <hr className="mt-12" />
+      <hr className="my-8" />
+
+      <article className="prose prose-stone dark:prose-invert ">
+        <ReactMarkdown>{post.content}</ReactMarkdown>
+      </article>
+
       <div className="flex justify-center py-6 lg:py-10">
         <Link href="/blog" className={cn(buttonVariants({ variant: "ghost" }))}>
           <ArrowLeft size={18} className="mr-2 h-4 w-4" />

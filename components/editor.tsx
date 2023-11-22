@@ -3,10 +3,9 @@
 import * as React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import EditorJS from "@editorjs/editorjs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import "@/styles/editor.css";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import TextareaAutosize from "react-textarea-autosize";
 import * as z from "zod";
 import "@/styles/editor.css";
@@ -19,11 +18,12 @@ import axios from "axios";
 import { toast } from "./ui/use-toast";
 import { CldUploadWidget } from "next-cloudinary";
 import Image from "next/image";
-
+import "easymde/dist/easymde.min.css";
 type FormData = z.infer<typeof postPatchSchema>;
 import slugify from "slugify";
 import { AspectRatio } from "./ui/aspect-ratio";
-import { Textarea } from "./ui/textarea";
+import SimpleMDE from "react-simplemde-editor";
+import dynamic from "next/dynamic";
 
 interface CldResult {
   url: string;
@@ -34,12 +34,14 @@ interface EditorProps {
 }
 
 function Editor({ post }: EditorProps) {
-  const { register, handleSubmit, watch, setValue } = useForm<FormData>({
-    resolver: zodResolver(postPatchSchema),
-    defaultValues: {
-      image: post.image || "",
-    },
-  });
+  const { register, handleSubmit, watch, setValue, control } =
+    useForm<FormData>({
+      resolver: zodResolver(postPatchSchema),
+      defaultValues: {
+        image: post.image || "",
+        content: post.content || "",
+      },
+    });
 
   const router = useRouter();
   const [isSaving, setIsSaving] = React.useState<boolean>(false);
@@ -158,10 +160,18 @@ function Editor({ post }: EditorProps) {
             id="title"
             defaultValue={post?.title}
             placeholder="Post title"
-            className="w-full resize-none appearance-none overflow-hidden bg-transparent text-5xl font-bold focus:outline-none"
+            className="w-full resize-none appearance-none overflow-hidden bg-transparent text-5xl font-bold focus:outline-none mb-4"
             {...register("title")}
           />
-          <Textarea {...register("content")} />
+
+          <Controller
+            name="content"
+            control={control}
+            defaultValue={post.content}
+            render={({ field }) => (
+              <SimpleMDE placeholder="Description" {...field} />
+            )}
+          />
         </div>
       </div>
     </form>

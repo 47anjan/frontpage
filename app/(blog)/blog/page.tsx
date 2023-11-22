@@ -65,7 +65,7 @@ const BlogPage = async () => {
                 </CardHeader>
                 <span className="sr-only">{post.title}</span>
                 <CardContent className="grid gap-2.5 p-4">
-                  <CardTitle className="line-clamp-1">{post.title}</CardTitle>
+                  <CardTitle className="line-clamp-2">{post.title}</CardTitle>
                   <CardDescription className="line-clamp-2">
                     {formatDate(post.createdAt.toDateString())}
                   </CardDescription>
