@@ -23,6 +23,7 @@ import Image from "next/image";
 type FormData = z.infer<typeof postPatchSchema>;
 import slugify from "slugify";
 import { AspectRatio } from "./ui/aspect-ratio";
+import { Textarea } from "./ui/textarea";
 
 interface CldResult {
   url: string;
@@ -39,75 +40,15 @@ function Editor({ post }: EditorProps) {
       image: post.image || "",
     },
   });
-  const ref = React.useRef<EditorJS>();
+
   const router = useRouter();
   const [isSaving, setIsSaving] = React.useState<boolean>(false);
-  const [isMounted, setIsMounted] = React.useState<boolean>(false);
-
-  const initializeEditor = React.useCallback(async () => {
-    const EditorJS = (await import("@editorjs/editorjs")).default;
-    //@ts-ignore
-    const Header = (await import("@editorjs/header")).default;
-    //@ts-ignore
-    const Embed = (await import("@editorjs/embed")).default;
-    //@ts-ignore
-    const Table = (await import("@editorjs/table")).default;
-    //@ts-ignore
-    const List = (await import("@editorjs/list")).default;
-    //@ts-ignore
-    const Code = (await import("@editorjs/code")).default;
-    //@ts-ignore
-    const LinkTool = (await import("@editorjs/link")).default;
-    //@ts-ignore
-    const InlineCode = (await import("@editorjs/inline-code")).default;
-
-    const body = postPatchSchema.parse(post);
-
-    if (!ref.current) {
-      const editor = new EditorJS({
-        holder: "editor",
-        onReady() {
-          ref.current = editor;
-        },
-        placeholder: "Type here to write your post...",
-        inlineToolbar: true,
-        data: body.content,
-        tools: {
-          header: Header,
-          linkTool: LinkTool,
-          list: List,
-          code: Code,
-          inlineCode: InlineCode,
-          table: Table,
-          embed: Embed,
-        },
-      });
-    }
-  }, [post]);
-
-  React.useEffect(() => {
-    if (typeof window !== "undefined") {
-      setIsMounted(true);
-    }
-  }, []);
-
-  React.useEffect(() => {
-    if (isMounted) {
-      initializeEditor();
-
-      return () => {
-        ref.current?.destroy();
-        ref.current = undefined;
-      };
-    }
-  }, [isMounted, initializeEditor]);
 
   const data = watch();
 
   async function onSubmit(data: FormData) {
     try {
       setIsSaving(true);
-      const blocks = await ref.current?.save();
 
       const slug = slugify(data.title!!, {
         replacement: "-",
@@ -117,7 +58,7 @@ function Editor({ post }: EditorProps) {
 
       const newPost = {
         title: data.title,
-        content: blocks,
+        content: data.content,
         image: data.image,
         slug: `${slug}-${post.id}`,
       };
@@ -134,10 +75,6 @@ function Editor({ post }: EditorProps) {
         variant: "destructive",
       });
     }
-  }
-
-  if (!isMounted) {
-    return null;
   }
 
   return (
@@ -224,14 +161,7 @@ function Editor({ post }: EditorProps) {
             className="w-full resize-none appearance-none overflow-hidden bg-transparent text-5xl font-bold focus:outline-none"
             {...register("title")}
           />
-          <div id="editor" className="min-h-[500px]" />
-          <p className="text-sm text-gray-500">
-            Use{" "}
-            <kbd className="rounded-md border bg-muted px-1 text-xs uppercase">
-              Tab
-            </kbd>{" "}
-            to open the command menu.
-          </p>
+          <Textarea {...register("content")} />
         </div>
       </div>
     </form>
