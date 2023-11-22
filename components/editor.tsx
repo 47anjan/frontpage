@@ -22,6 +22,7 @@ import Image from "next/image";
 
 type FormData = z.infer<typeof postPatchSchema>;
 import slugify from "slugify";
+import { AspectRatio } from "./ui/aspect-ratio";
 
 interface CldResult {
   url: string;
@@ -149,7 +150,10 @@ function Editor({ post }: EditorProps) {
                 router.push("/dashboard/posts");
                 router.refresh();
               }}
-              className={cn(buttonVariants({ variant: "ghost" }))}
+              className={cn(
+                buttonVariants({ variant: "ghost" }),
+                "cursor-pointer"
+              )}
             >
               <ArrowLeft className="mr-2" size={18} />
               Back
@@ -170,26 +174,28 @@ function Editor({ post }: EditorProps) {
 
         <div className="prose prose-stone mx-auto w-[800px] dark:prose-invert relative">
           {post.image && (
-            <Image
-              src={post.image || ""}
-              alt="Cover Photo"
-              width={800}
-              height={450}
-              loading="lazy"
-            />
+            <AspectRatio ratio={16 / 9} className="">
+              <Image
+                src={post.image || ""}
+                alt="Cover Photo"
+                fill
+                className="rounded-md object-cover"
+              />
+            </AspectRatio>
           )}
 
           {!post.image && data.image && (
-            <Image
-              src={data.image || ""}
-              alt="Cover Photo"
-              width={800}
-              height={450}
-              loading="lazy"
-            />
+            <AspectRatio ratio={16 / 9} className="">
+              <Image
+                src={data.image || ""}
+                alt="Cover Photo"
+                fill
+                className="rounded-md object-cover"
+              />
+            </AspectRatio>
           )}
 
-          <div className="flex flex-col gap-2 mb-4 ">
+          <div className="flex flex-col gap-2 mb-4 mt-10">
             <CldUploadWidget
               onUpload={(result, widget) => {
                 const image = result.info as CldResult;

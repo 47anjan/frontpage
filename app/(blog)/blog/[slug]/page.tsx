@@ -1,3 +1,4 @@
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { buttonVariants } from "@/components/ui/button";
 import { cn, formatDate } from "@/lib/utils";
 import prisma from "@/prisma/client";
@@ -63,14 +64,14 @@ const Blog = async ({ params }: Params) => {
         )}
       </div>
       {post.image && (
-        <Image
-          src={post.image}
-          alt={post.title}
-          width={720}
-          height={405}
-          className="my-8 rounded-md border bg-muted transition-colors"
-          priority
-        />
+        <AspectRatio ratio={16 / 9} className="bg-muted my-8">
+          <Image
+            src={post.image}
+            alt={post.title}
+            fill
+            className="rounded-md object-cover"
+          />
+        </AspectRatio>
       )}
 
       <hr className="mt-12" />
