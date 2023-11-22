@@ -1,29 +1,26 @@
 "use client";
 
-import * as React from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { zodResolver } from "@hookform/resolvers/zod";
-import "@/styles/editor.css";
-import { Controller, useForm } from "react-hook-form";
-import TextareaAutosize from "react-textarea-autosize";
-import * as z from "zod";
-import "@/styles/editor.css";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { postPatchSchema } from "@/lib/validations/post";
-import { Button, buttonVariants } from "@/components/ui/button";
+import "@/styles/editor.css";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Post } from "@prisma/client";
-import { ArrowLeft, Loader2 } from "lucide-react";
 import axios from "axios";
-import { toast } from "./ui/use-toast";
+import "easymde/dist/easymde.min.css";
+import { ArrowLeft, Loader2 } from "lucide-react";
 import { CldUploadWidget } from "next-cloudinary";
 import Image from "next/image";
-import "easymde/dist/easymde.min.css";
-type FormData = z.infer<typeof postPatchSchema>;
-import slugify from "slugify";
-import { AspectRatio } from "./ui/aspect-ratio";
+import { useRouter } from "next/navigation";
+import * as React from "react";
+import { Controller, useForm } from "react-hook-form";
 import SimpleMDE from "react-simplemde-editor";
-import dynamic from "next/dynamic";
+import TextareaAutosize from "react-textarea-autosize";
+import slugify from "slugify";
+import * as z from "zod";
+import { AspectRatio } from "./ui/aspect-ratio";
+import { toast } from "./ui/use-toast";
+type FormData = z.infer<typeof postPatchSchema>;
 
 interface CldResult {
   url: string;
