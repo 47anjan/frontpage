@@ -1,10 +1,9 @@
 import { getCurrentUser } from "@/app/auth/sessions";
 import { EmptyPlaceholder } from "@/components/empty-placeholder";
 import { PostCreateButton } from "@/components/post-create-button";
-import { PostItem } from "@/components/post-item";
 import PostStatusFilter from "@/components/post-status-filter";
+import Posts from "@/components/posts";
 import prisma from "@/prisma/client";
-import { tree } from "next/dist/build/templates/app-page";
 
 interface Props {
   searchParams: {
@@ -22,8 +21,6 @@ const ManagePostsPage = async ({ searchParams }: Props) => {
       : searchParams.published === undefined
       ? undefined
       : false;
-
-  console.log(status);
 
   const posts = await prisma.post.findMany({
     where: {
@@ -57,11 +54,7 @@ const ManagePostsPage = async ({ searchParams }: Props) => {
             <PostCreateButton variant="outline" />
           </EmptyPlaceholder>
         ) : (
-          <div className="divide-y divide-border rounded-md border">
-            {posts.map((post) => (
-              <PostItem key={post.id} post={post} />
-            ))}
-          </div>
+          <Posts posts={posts} />
         )}
       </div>
     </section>
