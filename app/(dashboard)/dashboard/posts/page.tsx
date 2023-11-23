@@ -2,15 +2,33 @@ import { getCurrentUser } from "@/app/auth/sessions";
 import { EmptyPlaceholder } from "@/components/empty-placeholder";
 import { PostCreateButton } from "@/components/post-create-button";
 import { PostItem } from "@/components/post-item";
+import PostStatusFilter from "@/components/post-status-filter";
 import prisma from "@/prisma/client";
+import { tree } from "next/dist/build/templates/app-page";
 
-const ManagePostsPage = async () => {
+interface Props {
+  searchParams: {
+    published: string;
+  };
+}
+
+const ManagePostsPage = async ({ searchParams }: Props) => {
   const user = await getCurrentUser();
   if (!user || !user?.email) return null;
+
+  const status =
+    searchParams.published === "true"
+      ? true
+      : searchParams.published === undefined
+      ? undefined
+      : false;
+
+  console.log(status);
 
   const posts = await prisma.post.findMany({
     where: {
       authorId: user.email,
+      published: status,
     },
   });
 
@@ -23,17 +41,14 @@ const ManagePostsPage = async () => {
             Create and manage posts.
           </p>
         </div>
-        <PostCreateButton />
+        <div className="flex items-center gap-4">
+          <PostStatusFilter />
+          <PostCreateButton />
+        </div>
       </div>
 
       <div>
-        {posts?.length ? (
-          <div className="divide-y divide-border rounded-md border">
-            {posts.map((post) => (
-              <PostItem key={post.id} post={post} />
-            ))}
-          </div>
-        ) : (
+        {posts?.length === 0 && status === undefined ? (
           <EmptyPlaceholder>
             <EmptyPlaceholder.Title>No posts created</EmptyPlaceholder.Title>
             <EmptyPlaceholder.Description>
@@ -41,6 +56,12 @@ const ManagePostsPage = async () => {
             </EmptyPlaceholder.Description>
             <PostCreateButton variant="outline" />
           </EmptyPlaceholder>
+        ) : (
+          <div className="divide-y divide-border rounded-md border">
+            {posts.map((post) => (
+              <PostItem key={post.id} post={post} />
+            ))}
+          </div>
         )}
       </div>
     </section>

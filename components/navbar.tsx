@@ -6,14 +6,15 @@ import { useSession } from "next-auth/react";
 import { Button } from "./ui/button";
 import { Skeleton } from "./ui/skeleton";
 import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 const Navbar = () => {
   const { status } = useSession();
 
   return (
     <header className="sticky top-0 z-[999999] w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 items-center justify-between">
-        <div className="mr-4 flex">
-          <Link className="mr-6 flex items-center space-x-2" href="/">
+        <div className="mr-4 flex items-center">
+          <Link className="mr-6 flex items-center space-x-2 mb-1" href="/">
             <span className=" font-bold inline-block">frontpage</span>
           </Link>
           <nav className="flex items-center space-x-6 text-sm font-medium">
