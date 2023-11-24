@@ -131,7 +131,7 @@ function Editor({ post }: EditorProps) {
             </AspectRatio>
           )}
 
-          <div className="flex flex-col gap-2 mb-4 mt-10">
+          <div className="flex flex-col gap-2 mb-8 mt-10">
             <CldUploadWidget
               onUpload={(result, widget) => {
                 const image = result.info as CldResult;

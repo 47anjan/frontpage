@@ -7,8 +7,12 @@ import { Button } from "./ui/button";
 import { Skeleton } from "./ui/skeleton";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { usePathname, useSelectedLayoutSegment } from "next/navigation";
+
 const Navbar = () => {
   const { status } = useSession();
+
+  const path = usePathname();
 
   return (
     <header className="sticky top-0 z-[999999] w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -19,7 +23,10 @@ const Navbar = () => {
           </Link>
           <nav className="flex items-center space-x-6 text-sm font-medium">
             <Link
-              className="transition-colors hover:text-foreground/80 text-foreground/60"
+              className={cn(
+                "transition-colors hover:text-foreground/80 text-foreground/60",
+                path === "/blog" ? "text-foreground" : "text-foreground/60"
+              )}
               href="/blog"
             >
               Blog
