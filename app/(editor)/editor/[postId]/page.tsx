@@ -19,15 +19,17 @@ const EditorPage = async ({ params: { postId } }: Params) => {
   if (!post) notFound();
 
   return (
-    <Editor
-      post={{
-        id: post.id,
-        title: post.title,
-        content: post.content,
-        published: post.published,
-        image: post.image || "",
-      }}
-    />
+    <div className="container mx-auto grid items-start gap-10 py-8">
+      <Editor
+        post={{
+          id: post.id,
+          title: post.title,
+          content: post.content,
+          published: post.published,
+          image: post.image || "",
+        }}
+      />
+    </div>
   );
 };
 export default EditorPage;
