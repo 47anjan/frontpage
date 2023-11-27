@@ -147,8 +147,7 @@ export default function Home() {
               Proudly Open Source
             </h2>
             <p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
-              Taxonomy is open source and powered by open source software.{" "}
-              <br /> The code is available on{" "}
+              Frontpage is open source <br /> The code is available on{" "}
               <Link
                 href={"https://github.com/anjankarmakar10/frontpage"}
                 target="_blank"

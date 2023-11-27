@@ -5,36 +5,39 @@ import prisma from "@/prisma/client";
 import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { cache } from "react";
 import ReactMarkdown from "react-markdown";
 interface Params {
   params: { slug: string };
 }
 
-const Blog = async ({ params }: Params) => {
-  const post = await prisma.post.findFirst({
+const fetchPost = cache((slug: string) =>
+  prisma.post.findFirst({
     where: {
-      slug: params.slug,
+      slug: slug,
     },
-  });
+  })
+);
 
-  const user = await prisma.user.findUnique({
-    where: { email: post?.authorId },
-  });
+const fetchUser = cache((email: string) =>
+  prisma.user.findUnique({
+    where: { email: email },
+  })
+);
 
+const Blog = async ({ params }: Params) => {
+  const post = await fetchPost(params.slug);
   if (!post) return null;
+  const user = await fetchUser(post?.authorId);
 
   return (
     <article className="container relative max-w-3xl py-6 lg:py-10">
-      <Link
-        href="/blog"
-        className={cn(
-          buttonVariants({ variant: "ghost" }),
-          "absolute left-[-200px] top-14 hidden xl:inline-flex"
-        )}
-      >
-        <ArrowLeft size={18} className="mr-2 h-4 w-4" />
-        See all posts
-      </Link>
+      <div className="absolute left-[-200px] top-14 hidden xl:flex flex-col gap-2">
+        <Link href="/blog" className={cn(buttonVariants({ variant: "ghost" }))}>
+          <ArrowLeft size={18} className="mr-2 h-4 w-4" />
+          See all posts
+        </Link>
+      </div>
       <div>
         <time
           dateTime={post.createdAt.toDateString()}

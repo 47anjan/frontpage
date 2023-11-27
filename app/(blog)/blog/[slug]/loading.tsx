@@ -1,3 +1,4 @@
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const LoadingPost = () => {
@@ -23,7 +24,9 @@ const LoadingPost = () => {
         </div>
       </div>
 
-      <Skeleton className="w-full h-[333px] mt-6" />
+      <AspectRatio ratio={16 / 9} className="bg-muted my-8">
+        <Skeleton className="w-full h-full" />
+      </AspectRatio>
 
       <hr className="my-8" />
     </article>
