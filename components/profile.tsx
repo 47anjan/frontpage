@@ -1,6 +1,6 @@
 "use client";
 
-import { LogOut, User } from "lucide-react";
+import { Bookmark, LogOut, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -53,6 +53,12 @@ function Profile() {
             </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
+        <DropdownMenuItem asChild>
+          <Link href="/dashboard/bookmarks">
+            <Bookmark className="mr-2 h-4 w-4" />
+            <span>Bookmarks</span>
+          </Link>
+        </DropdownMenuItem>
 
         <DropdownMenuSeparator />
 
