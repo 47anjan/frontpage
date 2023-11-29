@@ -4,7 +4,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 const LoadingPost = () => {
   return (
     <article className="container relative max-w-3xl py-6 lg:py-10">
-      <Skeleton className="absolute left-[-200px] top-14 hidden xl:inline-flex w-[141px] h-10 rounded-md" />
+      <div className="absolute left-[-200px] top-14 hidden xl:flex flex-col gap-2">
+        <Skeleton className="w-[141px] h-10 rounded-md" />
+        <Skeleton className=" w-[141px] h-10 rounded-md" />
+      </div>
 
       <div>
         <Skeleton className="w-60 h-5" />

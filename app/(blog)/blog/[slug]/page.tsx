@@ -1,3 +1,4 @@
+import Bookmark from "@/components/bookmark";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { buttonVariants } from "@/components/ui/button";
 import { cn, formatDate } from "@/lib/utils";
@@ -37,6 +38,7 @@ const Blog = async ({ params }: Params) => {
           <ArrowLeft size={18} className="mr-2 h-4 w-4" />
           See all posts
         </Link>
+        <Bookmark postId={post.id} />
       </div>
       <div>
         <time
