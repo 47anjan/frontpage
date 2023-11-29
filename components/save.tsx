@@ -8,10 +8,10 @@ import { toast } from "./ui/use-toast";
 import axios from "axios";
 
 interface Props {
-  postId: string;
+  postSlug: string;
 }
 
-const Save = ({ postId }: Props) => {
+const Save = ({ postSlug }: Props) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
@@ -19,15 +19,17 @@ const Save = ({ postId }: Props) => {
     try {
       setIsLoading(true);
       await axios.post("/api/saves", {
-        postId,
+        postSlug,
       });
 
       router.refresh();
       toast({
         title: "Successfully save your post",
-        variant: "destructive",
+        variant: "default",
       });
     } catch (error) {
+      console.log(error);
+
       setIsLoading(false);
       toast({
         title: "Something went wrong.",

@@ -18,8 +18,8 @@ export async function POST(request: NextRequest) {
   if (!validation.success)
     return NextResponse.json(validation.error.format(), { status: 400 });
 
-  const post = await prisma.post.findUnique({
-    where: { id: body.postId },
+  const post = await prisma.post.findFirst({
+    where: { slug: body.postSlug },
   });
 
   if (!post)
@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
 
   const save = await prisma.save.create({
     data: {
-      postId: body.postId,
+      postSlug: body.postSlug,
       userEmail: session.user?.email!!,
     },
   });

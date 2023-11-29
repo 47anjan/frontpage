@@ -4,20 +4,24 @@ import UnSave from "./unsave";
 import { getServerSession } from "next-auth";
 import authOptions from "@/app/auth/authOptions";
 interface Props {
-  postId: string;
+  postSlug: string;
 }
-const Bookmark = async ({ postId }: Props) => {
+const Bookmark = async ({ postSlug }: Props) => {
   const session = await getServerSession(authOptions);
 
   if (!session) return null;
 
   const comment = await prisma.save.findFirst({
     where: {
-      postId: postId,
+      postSlug: postSlug,
       userEmail: session?.user?.email!!,
     },
   });
 
-  return <>{comment ? <UnSave postId={postId} /> : <Save postId={postId} />}</>;
+  return (
+    <>
+      {comment ? <UnSave postSlug={postSlug} /> : <Save postSlug={postSlug} />}
+    </>
+  );
 };
 export default Bookmark;

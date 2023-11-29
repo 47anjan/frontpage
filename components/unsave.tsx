@@ -1,13 +1,19 @@
+"use client";
 import { Bookmark } from "lucide-react";
 import { Button } from "./ui/button";
 
 interface Props {
-  postId: string;
+  postSlug: string;
 }
 
-const UnSave = ({ postId }: Props) => {
+const UnSave = ({ postSlug }: Props) => {
   return (
-    <Button title="Unsave" className="gap-4" variant="outline">
+    <Button
+      onClick={() => console.log(postSlug)}
+      title="Unsave"
+      className="gap-4"
+      variant="outline"
+    >
       Saved
       <Bookmark fill="white" size={18} />
     </Button>

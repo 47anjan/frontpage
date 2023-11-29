@@ -38,7 +38,7 @@ const Blog = async ({ params }: Params) => {
           <ArrowLeft size={18} className="mr-2 h-4 w-4" />
           See all posts
         </Link>
-        <Bookmark postId={post.id} />
+        <Bookmark postSlug={post.slug!!} />
       </div>
       <div>
         <time

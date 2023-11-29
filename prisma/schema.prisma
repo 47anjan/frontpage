@@ -71,7 +71,7 @@ model Post {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now())
   authorId    String
-  slug        String?
+  slug        String? @unique
   description String?
   image       String?
   author      User     @relation(fields: [authorId], references: [email])
@@ -84,6 +84,6 @@ model Save {
   id        String @id @default(cuid()) @map("_id")
   userEmail String
   user      User   @relation(fields: [userEmail], references: [email])
-  postId    String @db.ObjectId
-  post      Post   @relation(fields: [postId], references: [id])
+  postSlug    String 
+  post      Post   @relation(fields: [postSlug], references: [slug])
 }
