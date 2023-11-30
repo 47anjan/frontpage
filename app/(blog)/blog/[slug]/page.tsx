@@ -48,7 +48,7 @@ const Blog = async ({ params }: Params) => {
           Published on {formatDate(post.createdAt.toDateString())}
         </time>
 
-        <h1 className="mt-2 inline-block font-bold text-4xl leading-snug lg:text-5xl">
+        <h1 className="mt-2 inline-block font-bold text-3xl md:text-4xl leading-snug lg:text-5xl">
           {post.title}
         </h1>
 
@@ -85,13 +85,24 @@ const Blog = async ({ params }: Params) => {
         <ReactMarkdown>{post.content}</ReactMarkdown>
       </article>
 
-      <div className="flex justify-center py-6 lg:py-10">
+      <div className="flex  gap-4 justify-center py-6 lg:py-10">
         <Link href="/blog" className={cn(buttonVariants({ variant: "ghost" }))}>
           <ArrowLeft size={18} className="mr-2 h-4 w-4" />
           See all posts
         </Link>
+        <Bookmark postSlug={post.slug!!} />
       </div>
     </article>
   );
 };
+
+export async function generateMetadata({ params }: Params) {
+  const post = await fetchPost(params.slug);
+
+  return {
+    title: post?.title,
+    description: "Details of blg " + post?.slug,
+  };
+}
+
 export default Blog;
