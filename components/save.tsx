@@ -47,11 +47,16 @@ const Save = ({ postSlug }: Props) => {
       variant="outline"
       disabled={isLoading}
     >
-      Save
       {isLoading ? (
-        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+        <>
+          Saving
+          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+        </>
       ) : (
-        <Bookmark size={18} />
+        <>
+          Save
+          <Bookmark size={18} />
+        </>
       )}
     </Button>
   );
