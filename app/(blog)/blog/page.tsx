@@ -1,14 +1,19 @@
 import PostCard from "@/components/post-card";
 import prisma from "@/prisma/client";
 import Link from "next/link";
+import { cache } from "react";
 
-const BlogPage = async () => {
-  const posts = await prisma.post.findMany({
+const fetchPosts = cache(() =>
+  prisma.post.findMany({
     where: { published: true },
     orderBy: {
       createdAt: "desc",
     },
-  });
+  })
+);
+
+const BlogPage = async () => {
+  const posts = await fetchPosts();
 
   return (
     <div className="container max-w-4xl py-6 lg:py-10">

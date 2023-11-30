@@ -1,26 +1,29 @@
 import prisma from "@/prisma/client";
 import Save from "./save";
 import UnSave from "./unsave";
-import { getServerSession } from "next-auth";
-import authOptions from "@/app/auth/authOptions";
+import { getCurrentUser } from "@/app/auth/sessions";
 interface Props {
   postSlug: string;
 }
 const Bookmark = async ({ postSlug }: Props) => {
-  const session = await getServerSession(authOptions);
+  const user = await getCurrentUser();
 
-  if (!session) return null;
+  if (!user) return null;
 
-  const comment = await prisma.save.findFirst({
+  const bookmark = await prisma.save.findFirst({
     where: {
       postSlug: postSlug,
-      userEmail: session?.user?.email!!,
+      userEmail: user?.email!!,
     },
   });
 
   return (
     <>
-      {comment ? <UnSave postSlug={postSlug} /> : <Save postSlug={postSlug} />}
+      {bookmark ? (
+        <UnSave bookmarkId={bookmark.id} />
+      ) : (
+        <Save postSlug={postSlug} />
+      )}
     </>
   );
 };

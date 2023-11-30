@@ -3,13 +3,15 @@ import { Bookmark } from "lucide-react";
 import { Button } from "./ui/button";
 
 interface Props {
-  postSlug: string;
+  bookmarkId: string;
 }
 
-const UnSave = ({ postSlug }: Props) => {
+const UnSave = ({ bookmarkId }: Props) => {
+  const handleDelete = () => {};
+
   return (
     <Button
-      onClick={() => console.log(postSlug)}
+      onClick={handleDelete}
       title="Unsave"
       className="gap-4"
       variant="outline"

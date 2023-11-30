@@ -9,7 +9,7 @@ interface PostItemProps {
 
 export function PostItem({ post }: PostItemProps) {
   return (
-    <div className="flex items-center justify-between p-4">
+    <article className="flex items-center justify-between p-4">
       <div className="grid gap-1">
         <div className="flex gap-2 items-center">
           <Link
@@ -31,6 +31,6 @@ export function PostItem({ post }: PostItemProps) {
       <div>
         <PostOperations post={post} />
       </div>
-    </div>
+    </article>
   );
 }
