@@ -1,5 +1,6 @@
 import PostCard from "@/components/post-card";
 import prisma from "@/prisma/client";
+import { Metadata } from "next";
 import Link from "next/link";
 import { cache } from "react";
 
@@ -42,4 +43,10 @@ const BlogPage = async () => {
     </div>
   );
 };
+
+export const metadata: Metadata = {
+  title: "Blogs",
+  description: "Blogs page",
+};
+
 export default BlogPage;

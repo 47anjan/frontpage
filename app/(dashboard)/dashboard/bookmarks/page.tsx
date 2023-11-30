@@ -2,6 +2,7 @@ import { getCurrentUser } from "@/app/auth/sessions";
 import BookmarksItems from "@/components/bookmarks-items";
 import { EmptyPlaceholder } from "@/components/empty-placeholder";
 import prisma from "@/prisma/client";
+import { Metadata } from "next";
 
 const Bookmarks = async () => {
   const user = await getCurrentUser();
@@ -39,4 +40,10 @@ const Bookmarks = async () => {
     </section>
   );
 };
+
+export const metadata: Metadata = {
+  title: "Dashboard | Bookmark",
+  description: "Bookark page",
+};
+
 export default Bookmarks;

@@ -1,5 +1,4 @@
 import PostItemSkeleton from "@/components/post-item-skeleton";
-import { Skeleton } from "@/components/ui/skeleton";
 
 const LoadingPage = () => {
   return (

@@ -4,6 +4,7 @@ import { PostCreateButton } from "@/components/post-create-button";
 import PostStatusFilter from "@/components/post-status-filter";
 import Posts from "@/components/posts";
 import prisma from "@/prisma/client";
+import { Metadata } from "next";
 
 interface Props {
   searchParams: {
@@ -60,4 +61,10 @@ const ManagePostsPage = async ({ searchParams }: Props) => {
     </section>
   );
 };
+
+export const metadata: Metadata = {
+  title: "Dashboard | Manage Post",
+  description: "Manage post page",
+};
+
 export default ManagePostsPage;
