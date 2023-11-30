@@ -54,6 +54,12 @@ export async function DELETE(
   if (!post)
     return NextResponse.json({ error: "Invalid post" }, { status: 404 });
 
+  await prisma.save.deleteMany({
+    where: {
+      postSlug: post?.slug!!,
+    },
+  });
+
   const result = await prisma.post.delete({
     where: { id: params.id },
   });
