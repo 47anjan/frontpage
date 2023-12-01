@@ -68,6 +68,9 @@ function Editor({ post }: EditorProps) {
         description: "Your post has been saved.",
       });
     } catch (error) {
+      console.log(error);
+
+      setIsSaving(false);
       toast({
         title: "Something went wrong.",
         description: "Your post was not saved. Please try again.",
