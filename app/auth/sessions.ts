@@ -6,3 +6,7 @@ export async function getCurrentUser() {
 
   return session?.user;
 }
+
+export async function getSession() {
+  return await getServerSession(authOptions);
+}

@@ -1,3 +1,4 @@
+import { getSession } from "@/app/auth/sessions";
 import Bookmark from "@/components/bookmark";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { buttonVariants } from "@/components/ui/button";
@@ -30,6 +31,7 @@ const Blog = async ({ params }: Params) => {
   const post = await fetchPost(params.slug);
   if (!post) return null;
   const user = await fetchUser(post?.authorId);
+  const session = await getSession();
 
   return (
     <article className="container relative max-w-3xl py-6 lg:py-10">
@@ -38,7 +40,7 @@ const Blog = async ({ params }: Params) => {
           <ArrowLeft size={18} className="mr-2 h-4 w-4" />
           See all posts
         </Link>
-        <Bookmark postSlug={post.slug!!} />
+        {session && <Bookmark postSlug={post.slug!!} />}
       </div>
       <div>
         <time
@@ -90,7 +92,7 @@ const Blog = async ({ params }: Params) => {
           <ArrowLeft size={18} className="mr-2 h-4 w-4" />
           See all posts
         </Link>
-        <Bookmark postSlug={post.slug!!} />
+        {session && <Bookmark postSlug={post.slug!!} />}
       </div>
     </article>
   );
