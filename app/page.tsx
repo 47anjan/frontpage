@@ -16,7 +16,7 @@ export default function Home() {
               Follow along on Twitter
             </Link>
             <h1 className="font-bold text-3xl sm:text-5xl md:text-6xl lg:text-7xl">
-              An blog app built using Next.js 14 server components.
+              A blog app built using Next.js 14 server components.
             </h1>
             <p className="max-w-[42rem] leading-normal text-muted-foreground sm:text-xl sm:leading-8">
               I&apos;m building a web app with Next.js 14 and open sourcing
