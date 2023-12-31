@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Post } from "@prisma/client";
 import axios from "axios";
 import "easymde/dist/easymde.min.css";
+import "@/styles/simpleMDE-dark.css";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { CldUploadWidget } from "next-cloudinary";
 import Image from "next/image";
